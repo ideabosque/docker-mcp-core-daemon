@@ -9,7 +9,7 @@ services:
     stdin_open: true  # Keep STDIN open for MCP stdio communication
     tty: true         # Allocate a pseudo-TTY
     ports:
-      - "8000:${PORT}"   # Expose port for SSE transport
+      - "${CONTAINER_PORT}:${PORT}"   # Expose port for SSE transport
     volumes:
       - ./logs:/var/log/supervisor
       - ./data:/app/data  # Mount for persistent data if needed
@@ -23,7 +23,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     restart: no # unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health", "||", "echo", "stdio mode"]
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health", "||", "echo", "stdio mode"]
       interval: 30s
       timeout: 10s
       retries: 3
