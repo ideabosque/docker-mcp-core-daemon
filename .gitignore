@@ -1,0 +1,8 @@
+.ssh/
+.vscode/
+.env
+.dockerignore
+
+data/
+logs/
+*.bak

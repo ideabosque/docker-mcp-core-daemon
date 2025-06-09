@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mcp-core-daemon:
+    build: .
+    container_name: mcp-server
+    env_file:
+      - .env
+    stdin_open: true  # Keep STDIN open for MCP stdio communication
+    tty: true         # Allocate a pseudo-TTY
+    ports:
+      - "8000:${PORT}"   # Expose port for SSE transport
+    volumes:
+      - ./logs:/var/log/supervisor
+      - ./data:/app/data  # Mount for persistent data if needed
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MCP_ENV=production
+      - PORT=${PORT}
+      - MCP_CONFIG_FILE=${MCP_CONFIG_FILE}
+      - REGION_NAME=${REGION_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    restart: no # unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health", "||", "echo", "stdio mode"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]  # Start supervisor as root (it will drop privileges for child processes)

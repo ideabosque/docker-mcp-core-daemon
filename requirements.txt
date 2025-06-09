@@ -1,0 +1,21 @@
+# Official MCP SDK for Python
+mcp>=1.0.0
+
+# FastAPI and uvicorn for SSE support
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# System monitoring for metrics
+psutil>=5.9.0
+
+# Additional utilities
+python-json-logger==2.0.7
+
+boto3
+pendulum
+graphene==2.1.9
+SQLAlchemy==1.4.44
+git+https://github.com/ideabosque/silvaengine_utility.git@main#egg=silvaengine_utility
+git+https://github.com/ideabosque/silvaengine_dynamodb_base.git@main#egg=silvaengine_dynamodb_base
+git+https://github.com/ideabosque/ai_mcp_daemon_engine.git@main#egg=ai_mcp_daemon_engine
+git+https://github.com/ideabosque/mcp_function_demo.git@main#egg=mcp_function_demo
