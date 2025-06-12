@@ -16,11 +16,23 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - MCP_ENV=production
-      - PORT=${PORT}
-      - MCP_CONFIG_FILE=${MCP_CONFIG_FILE}
       - REGION_NAME=${REGION_NAME}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - PORT=${PORT}
+      - MCP_CONFIG_FILE=${MCP_CONFIG_FILE}
+      - AUTH_PROVIDER=${AUTH_PROVIDER}
+      - LOCAL_USER_FILE=${LOCAL_USER_FILE}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_STATIC_TOKEN=${ADMIN_STATIC_TOKEN}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_APP_CLIENT_ID=${COGNITO_APP_CLIENT_ID}
+      - COGNITO_APP_SECRET=${COGNITO_APP_SECRET}
+      - COGNITO_JWKS_URL=${COGNITO_JWKS_URL}
+      - FUNCT_BUCKET_NAME=${FUNCT_BUCKET_NAME}
+      - FUNCT_ZIP_PATH=${FUNCT_ZIP_PATH}
+      - FUNCT_EXTRACT_PATH=${FUNCT_EXTRACT_PATH}
     restart: no # unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health", "||", "echo", "stdio mode"]
