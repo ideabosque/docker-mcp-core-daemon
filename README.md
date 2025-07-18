@@ -36,14 +36,14 @@ A production‑ready container image and `docker‑compose` manifest for the **M
    ```bash
    git clone https://github.com/your‑org/docker‑mcp‑core‑daemon.git
    cd docker‑mcp‑core‑daemon
-   cp .env .env.local  # never commit secrets!
-   vi .env.local       # set AWS creds, admin password, etc.
+   # create your `.env` (see **Sample `.env` file** section below)
+   vi .env           # set AWS creds, admin password, etc.
    ```
 
 2. **Launch**
 
    ```bash
-   docker compose --env-file .env.local up -d
+   docker compose up -d
    # or
    make up
    ```
@@ -54,21 +54,46 @@ A production‑ready container image and `docker‑compose` manifest for the **M
      A valid SSE stream starting with `event: open` confirms readiness.
    * **Container logs:** `docker logs -f mcp-server`
 
+## 🗒️ Sample `.env` file
+
+```dotenv
+REGION_NAME=xxxxxxxxxxxxxxxxxxxxxxxxx
+AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxxxxxxxxxxxx
+AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxx
+PORT=8000
+CONTAINER_PORT=8000
+MCP_CONFIG_FILE=/app/data/mc_configuration_file.json
+AUTH_PROVIDER=cognito|local
+LOCAL_USER_FILE=/app/data/users.json
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
+ADMIN_STATIC_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxx
+COGNITO_USER_POOL_ID=xxxxxxxxxxxxxxxxxxxxxxxxx
+COGNITO_APP_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxx
+COGNITO_APP_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxx
+COGNITO_JWKS_URL=
+FUNCT_BUCKET_NAME=mcp-functs
+FUNCT_ZIP_PATH=
+FUNCT_EXTRACT_PATH=
+```
+
+> **Replace** these *mock* credentials with secure values before production deployment.
+
 ---
 
 ## ⚙️ Configuration & environment
 
-| Variable             | Purpose                                                 | Example                     |
-| -------------------- | ------------------------------------------------------- | --------------------------- |
-| `PORT`               | Internal daemon port                                    | `8000`                      |
-| `CONTAINER_PORT`     | Published host port (prefilled in `docker-compose.yml`) | `8000`                      |
-| `MCP_ENV`            | Run mode (`production`, `staging`, `dev`)               | `production`                |
-| `MCP_CONFIG_FILE`    | Path to daemon JSON config inside the container         | `/app/data/mcp_config.json` |
-| `AUTH_PROVIDER`      | `cognito` \| `local`                                    | `cognito`                   |
-| `REGION_NAME`        | AWS region for Cognito/JWT validation                   | `us‑west‑2`                 |
-| `ADMIN_USERNAME`     | Bootstrap admin user                                    | `admin`                     |
-| `ADMIN_PASSWORD`     | Bootstrap admin password                                | `change‑me‑123!`            |
-| `ADMIN_STATIC_TOKEN` | Optional pre‑minted JWT for CI or headless access       |                             |
+| Variable             | Purpose                                                 | Example                                |
+| -------------------- | ------------------------------------------------------- | -------------------------------------- |
+| `PORT`               | Internal daemon port                                    | `8000`                                 |
+| `CONTAINER_PORT`     | Published host port (prefilled in `docker-compose.yml`) | `8000`                                 |
+| `MCP_ENV`            | Run mode (`production`, `staging`, `dev`)               | `production`                           |
+| `MCP_CONFIG_FILE`    | Path to daemon JSON config inside the container         | `/app/data/mc_configuration_file.json` |
+| `AUTH_PROVIDER`      | `cognito` \| `local`                                    | `cognito`                              |
+| `REGION_NAME`        | AWS region for Cognito/JWT validation                   | `us‑west‑2`                            |
+| `ADMIN_USERNAME`     | Bootstrap admin user                                    | `admin`                                |
+| `ADMIN_PASSWORD`     | Bootstrap admin password                                | `admin123`                             |
+| `ADMIN_STATIC_TOKEN` | Optional pre‑minted JWT for CI or headless access       |                                        |
 
 > **Note**  Replace any secrets (keys, passwords, tokens) before deploying.
 > For production you should inject them via a secure secrets manager (AWS Secrets Manager, Vault, Doppler, …).
